@@ -1,0 +1,42 @@
+version: "3.3"
+
+services:
+    nginx:
+        build:
+            args:
+                USER_ID: ${USER_ID:-0}
+                GROUP_ID: ${GROUP_ID:-0}
+            context: .
+            dockerfile: docker/Nginx.Dockerfile
+        ports:
+            -   8098:80
+        links:
+            -   fpm
+        volumes:
+            - ./:/var/www/laravel-docker
+
+    fpm:
+        build:
+            args:
+                USER_ID: ${USER_ID:-0}
+                GROUP_ID: ${GROUP_ID:-0}
+            context: .
+            dockerfile: docker/Fpm.Dockerfile
+        volumes:
+            -   ./:/var/www/laravel-docker
+        links:
+            -   pgsql
+    pgsql:
+        image: postgres
+        ports:
+            -   5432:5432
+        container_name: postgresdb
+        restart: always
+        env_file:
+                - ./.env
+        environment:
+            - DB_CONNECTION=pgsql
+            - DB_HOST=127.0.0.1
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DATABASE=agr
