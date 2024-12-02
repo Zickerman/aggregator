@@ -3,9 +3,6 @@ version: "3.3"
 services:
     nginx:
         build:
-            args:
-                USER_ID: ${USER_ID:-0}
-                GROUP_ID: ${GROUP_ID:-0}
             context: .
             dockerfile: docker/Nginx.Dockerfile
         ports:
@@ -18,8 +15,8 @@ services:
     fpm:
         build:
             args:
-                USER_ID: ${USER_ID:-0}
-                GROUP_ID: ${GROUP_ID:-0}
+                UID: 1000
+                GID: 1000
             context: .
             dockerfile: docker/Fpm.Dockerfile
         volumes:
