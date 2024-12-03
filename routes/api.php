@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiProxyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// возможно стоит ограничить количество запросов
+Route::get('/get-number', [ApiProxyController::class, 'getNumber']);
+Route::get('/get-sms', [ApiProxyController::class, 'getSms']);
+Route::get('/cancel-number', [ApiProxyController::class, 'cancelNumber']);
+Route::get('/get-status', [ApiProxyController::class, 'getStatus']);
