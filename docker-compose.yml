@@ -7,10 +7,12 @@ services:
             dockerfile: docker/Nginx.Dockerfile
         ports:
             -   8098:80
-        links:
+        depends_on:
             -   fpm
         volumes:
             - ./:/var/www/laravel-docker
+        networks:
+            - laravel-network
 
     fpm:
         build:
@@ -21,8 +23,12 @@ services:
             dockerfile: docker/Fpm.Dockerfile
         volumes:
             -   ./:/var/www/laravel-docker
-        links:
+        depends_on:
             -   pgsql
+            -   rabbitmq
+        networks:
+            - laravel-network
+
     pgsql:
         image: postgres
         ports:
@@ -37,3 +43,21 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
             - POSTGRES_DATABASE=agr
+        networks:
+            - laravel-network
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        ports:
+            - 15672:15672
+            - 5672:5672
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        networks:
+        - laravel-network
+
+networks:
+    laravel-network:
+        driver: bridge

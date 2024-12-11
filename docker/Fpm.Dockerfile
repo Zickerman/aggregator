@@ -5,8 +5,11 @@ RUN apt-get update && apt-get install -y \
     git \
     zip \
     unzip \
+    librabbitmq-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/lib/postgresql \
-    && docker-php-ext-install pdo pdo_pgsql pgsql
+    && docker-php-ext-install pdo pdo_pgsql pgsql \
+    && docker-php-ext-install sockets
+RUN pecl install amqp && docker-php-ext-enable amqp
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
