@@ -20,3 +20,8 @@ Then execute the following commands in the project root directory:
 make sure you have permissions to the STORAGE folder (outside the container)
 
 - open http://localhost:8098
+
+
+
+usefull commands:
+- docker compose exec -u root fpm bash
