@@ -18,6 +18,12 @@ Then execute the following commands in the project root directory:
  - php artisan key:generate
 
 make sure you have permissions to the STORAGE folder (outside the container)
+if some problem when execute npm install like:
+npm error [Error: EACCES: permission denied, mkdir '/var/www/laravel-docker/node_modules/fsevents']
+execute:
+- sudo chown -R 1000:1000 ./node_modules
+- npm install
+
 
 - open http://localhost:8098
 

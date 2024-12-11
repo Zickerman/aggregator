@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     librabbitmq-dev \
+    curl \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/lib/postgresql \
     && docker-php-ext-install pdo pdo_pgsql pgsql \
     && docker-php-ext-install sockets
@@ -13,6 +14,8 @@ RUN pecl install amqp && docker-php-ext-enable amqp
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
 
 # get user id from outside and set rights to resolve permissions problems
 ARG UID
